@@ -1,6 +1,6 @@
-import { BlockPermutation, EnchantmentTypes, EntityComponentTypes, ItemStack, Player, Vector3} from "@minecraft/server";
+import { BlockPermutation, Container, EnchantmentTypes, EntityComponentTypes, ItemStack, Player, Vector3} from "@minecraft/server";
 import { blockbagData } from "../type";
-import { StorageId } from "../pram";
+import { blockbagId, StorageId } from "../pram";
 import { getPlayerSpeed } from "../helper";
 
 export function setBagInter(itemStack: ItemStack, typeId: string, count: number,player:Player) {
@@ -117,6 +117,27 @@ export function getBagInter(itemStack: ItemStack): blockbagData | undefined {
 
 
 
+}
+
+export function findbag(container: Container, itemId: string) {
+  // コンテナの全スロットをループ
+  for (let slot = 0; slot < container.size; slot++) {
+    const item = container.getItem(slot);
+
+    if(item){
+
+          const inter  = getBagInter(item)
+
+          // スロットにアイテムが存在し、かつIDが一致するか確認
+          if (blockbagId === item.typeId&&inter?.type === itemId) {
+            return slot; // 見つかった時点でスロット位置を返して終了
+          }
+
+    }
+
+  
+  }
+  return -1; // 全て空、または一致しなかった場合に -1
 }
 
 export function checkBlock(typeId:string){

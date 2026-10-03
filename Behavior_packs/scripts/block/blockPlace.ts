@@ -43,10 +43,7 @@ export function placeInteractBlock(player:Player,item:ItemStack,targetBlock:Bloc
 
     
     
-    
-              //koko
-              //player.onScreenDisplay.setActionBar("設置方向:" + `${targetBlock?.face}`)
-
+   
         
               if (typeof interItem !== "string" ||  InterCount < 1 || !targetBlock) {
                 return;
@@ -100,10 +97,6 @@ export function placeInteractBlock(player:Player,item:ItemStack,targetBlock:Bloc
               if (!directionBlock || !interItem  ||!directionBlock.isLiquid&&!isSolidBlock(directionBlock.typeId,replaceableID)&&!directionBlock.isAir || !solidBlock&&entityHindering) return;
     
           
-    
-              //player.onScreenDisplay.setActionBar("設置方向:"+`§ax:${maxDirection.x} §aY:${maxDirection.y} §bZ:${maxDirection.z}`+"\n"+`視点方向: §ax:${useDirection.x} §aY:${useDirection.y} §bZ:${useDirection.z}`)
-    
-    
  
     
 
@@ -152,7 +145,7 @@ export function placeInteractBlock(player:Player,item:ItemStack,targetBlock:Bloc
               //現在時刻を記録してクールタイムを初期化
               player.setDynamicProperty(StorageId.PLAYER_PLACE_LAST_TICK,system.currentTick)
 
-              //座標の履歴を保存
+     
               player.setDynamicProperty(StorageId.PLAYER_PLACE_LAST_VEC,targetBlock.location)
            
 
@@ -163,8 +156,6 @@ export function placeInteractBlock(player:Player,item:ItemStack,targetBlock:Bloc
 
               
 
-              //最後の設置場所に面した座標を取得。
-              
              
      
 
@@ -195,103 +186,8 @@ export function placeInteractBlock(player:Player,item:ItemStack,targetBlock:Bloc
 
 
  
-/*
-*
-* プレイヤーの視線先にあるブロック情報を取得します。
-* 視線の先にブロックが見つからない場合（undefined）は、足元のブロックと
-* 視線方向から算出した面（Direction）の組み合わせをフォールバックとして返します。
-*
-* @param { Player } player 判定対象のプレイヤー
-* @param { number } maxDistance Raycastの最大照射距離（デフォルト: 7）
-* @returns { { block: Block, face: Direction } | undefined } ターゲット情報 \*
-*/
-export  function getTargetBlockWithFallback(player:Player, maxDistance = 7):{block:Block,face:Direction}|undefined {
-
-        // 1\. 通常の視線判定（レイキャスト）を実行 [cite: 5, 55] 
-        const entityHit = player.getEntitiesFromViewDirection({ maxDistance,includePassableBlocks:true,excludeTypes:["minecraft:arrow"]});
-        const blockHit = player.getBlockFromViewDirection({ maxDistance,includePassableBlocks:true});
-        const nextHit = player.getBlockFromViewDirection({ maxDistance:maxDistance+1,includePassableBlocks:true,excludeTypes:["minecraft:arrow"]});
 
 
-        if(entityHit.length > 0){
-            return
-        }
-
-        if (blockHit) {
-    
-            const placeBlock = BlocksInTheDirection(blockHit.block,blockHit.face)
-            
-            if(placeBlock){
-                    return {
-                        block: placeBlock,
-                        face: blockHit.face
-                        
-                    };
-             }
-
-        } 
-
-        
-        if(!nextHit&& player.getRotation().x > 48){
-        
-                    // 2. 視線先にブロックがない場合、足元のブロックを取得 [cite: 7, 57] 
-                    let standingBlock = player.getBlockStandingOn();
-                if (!standingBlock) return undefined; // 3. プレイヤーの視線ベクトル（getViewDirection）から最も向いている面（Face）を判定 [cite: 12, 64]
-                    const view = player.getViewDirection(); // [cite: 12, 64]
-                    const absX = Math.abs(view.x);
-                    const absY = Math.abs(view.y);
-                    const absZ = Math.abs(view.z);
-
-                    let face = Direction.North; // [cite: 25] 
-
-                    if (absX > absZ) {
-                        face = view.x > 0 ? Direction.East : Direction.West; // [cite: 25] } 
-                    }
-                    else {
-                        face = view.z > 0 ? Direction.South : Direction.North; // [cite: 25]
-
-                    } // getBlockFromViewDirection と同じ構造 { block, face } で返却
-
-                    const adjacent = getAdjacentBlock(standingBlock,face)
-                    const block    =  player.dimension.getBlock(adjacent)
-
-                    if(block){
-                        return {
-                            block: block,
-                            face: face
-                        };
-                    }
-        }
-}
-
-
-export function getAdjacentBlock(block:Block,direction:"West"|"East"|"North"|"South"|"Up"|"Down"):Vector3{
-
-
-
-    const blockPos = {x:block.x,y:block.y,z:block.z}
-    let result = {...blockPos,y:block.y + 1}
-
-    switch(direction){
-        
-        case "West":result =  {...blockPos,x:block.x - 1}; break;
-        case "East":result =  {...blockPos,x:block.x + 1}; break;
-        case "North":result =  {...blockPos,z:block.z - 1}; break;
-        case "South":result =  {...blockPos,z:block.z + 1}; break;
-        case "Up":result =  {...blockPos,y:block.y + 1}; break;
-        case "Down":result =  {...blockPos,y:block.y - 1}; break;
-
-    }
-
-    return result
-
-
-
-     
-
-
-
-}
 
 
 
@@ -354,74 +250,12 @@ export function BlocksInTheDirection(block: Block, direction: Direction) {
 
 }
 
-export function blocksInTheOppositeDirection(block: Block, direction: Direction) {
 
-
-  switch (direction) {
-
- 
-
-    case "East":
-
-      return block.west();
-
-
-    case "West":
-
-      return block.east();
-
-
-
-
-    case "North":
-
-      return block.south();
-
-
-
-
-
-    case "South":
-
-      return block.north();
-
-
-
-    case "Up":
-
-      return block.below();
-
-    case "Down":
-
-      return block.above();
-
-
-
-
-
-
-
-
-    default:
-
-
-      return undefined;
-
-
-
-
-
-  }
-
-
-}
 
 export function getPlacementDirection(player: Player):Direction {
 
     const pitch = player.getRotation().x;
     const yaw = player.getRotation().y;
-    // -180 から 180 度 
-    // // プレイヤーが向いている方向を判定
 
      if (pitch <= -55 && pitch < -89) {
 
@@ -629,20 +463,20 @@ function isSolidBlock(typeId:string,list:string[]){
 }
 
 function isEntityCollidingWithTarget(target:Entity, targetLoc:Vector3) {
-    // プレイヤーのAABBを取得 { center: Vector3, extent: Vector3 } [1-3]
-    const pAABB = target.getAABB(); // [3]
+
+    const pAABB = target.getAABB(); 
     if (!pAABB) return false;
 
-    // center と extent からプレイヤーの当たり判定の最小値(pMin)と最大値(pMax)を算出 [1, 2]
+
     const pMin = {
-        x: pAABB.center.x - pAABB.extent.x, // [1, 2]
-        y: pAABB.center.y - pAABB.extent.y, // [1, 2]
-        z: pAABB.center.z - pAABB.extent.z  // [1, 2]
+        x: pAABB.center.x - pAABB.extent.x, 
+        y: pAABB.center.y - pAABB.extent.y,
+        z: pAABB.center.z - pAABB.extent.z  
     };
     const pMax = {
-        x: pAABB.center.x + pAABB.extent.x, // [1, 2]
-        y: pAABB.center.y + pAABB.extent.y, // [1, 2]
-        z: pAABB.center.z + pAABB.extent.z  // [1, 2]
+        x: pAABB.center.x + pAABB.extent.x, 
+        y: pAABB.center.y + pAABB.extent.y, 
+        z: pAABB.center.z + pAABB.extent.z  
     };
 
     // 設置予定ブロックのAABB範囲 (1x1x1の立方体)

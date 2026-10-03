@@ -1,5 +1,5 @@
 import { Container, Direction, EntityComponentTypes, EntitySwingSource, EquipmentSlot, ItemComponentTypes, ItemLockMode, ItemStack, Player, system, world } from "@minecraft/server";
-import { checkBlock, clearBagInter, getBagInter, getBlockCount, getBlockInterval, playerGiveItem, playerPosDropItem, setBagInter } from "./block/bagInter";
+import { checkBlock, clearBagInter, findbag, getBagInter, getBlockCount, getBlockInterval, playerGiveItem, playerPosDropItem, setBagInter } from "./block/bagInter";
 import { BlocksInTheDirection, getInvertDirection, getPlacementDirection, placeInteractBlock } from "./block/blockPlace";
 import {block_interaction_range, blockbagId, blockResetInterval, StorageId } from "./pram";
 import { replaceableID } from "./block/blocks";
@@ -95,6 +95,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe((event)=>{
 
     }
   })
+  
 
 }
   
@@ -461,8 +462,11 @@ world.beforeEvents.entityItemPickup.subscribe((event) => {
     if (contenter) {
       const findBag = findbag(contenter, pickupItem.typeId)//保存する鞄を探す関数
 
+     
       
       if (findBag > -1) {
+
+
 
     
 
@@ -490,30 +494,31 @@ world.beforeEvents.entityItemPickup.subscribe((event) => {
                   const currentSlot = contenter.getSlot(findBag)
                   const currentSlotItem = currentSlot.getItem()
                    const clientInterItem = currentSlotItem ? getBagInter(currentSlotItem):undefined;//鞄の中身を取得。type ->アイテムID,count->内部の個数
-
+               
+                  
                       if (clientInterItem && clientInterItem.type === pickupItem.typeId && slotItem !== undefined) {
 
-
-                       
 
 
                         const previous = clientInterItem.count
                 
                         if (typeof previous === "number") {
 
-                    
-
-
-                            if (!currentSlotItem ||blockbagId === currentSlotItem.typeId) return;
                           
-                            if(!clientInterItem)return;
+                  
+
+
+                            if (!currentSlotItem ||blockbagId !== currentSlotItem.typeId) return;
+
+                   
+                       
 
                             
                             const nextCount = previous + pickupItem.amount
 
                           
 
-                            const nextItem = setBagInter(currentSlotItem, clientInterItem.type, nextCount,player)//鞄に中身を設定する関数。連続して実行すると直前のデータが失われる。
+                            const nextItem = setBagInter(currentSlotItem, clientInterItem.type, nextCount,player)//鞄に中身を設定する関数。
                             getSlot.setItem(nextItem)
                             player.playSound("random.pop",{pitch:1.5})
 
@@ -615,7 +620,7 @@ world.afterEvents.worldLoad.subscribe(() => {
 
 
    world.getAllPlayers().forEach((player)=>{
-      resetAll(player)
+      resetBagpack(player)
    })
 
 
@@ -624,29 +629,10 @@ world.afterEvents.worldLoad.subscribe(() => {
 
 
 
-function findbag(container: Container, itemId: string) {
-  // コンテナの全スロットをループ
-  for (let slot = 0; slot < container.size; slot++) {
-    const item = container.getItem(slot);
-
-    if(item){
-
-          const inter  = getBagInter(item)
-
-          // スロットにアイテムが存在し、かつIDが一致するか確認
-          if (blockbagId === item.typeId&&inter?.type === itemId) {
-            return slot; // 見つかった時点でスロット位置を返して終了
-          }
-
-    }
-
-  
-  }
-  return -1; // 全て空、または一致しなかった場合に -1
-}
 
 
-function resetAll(player:Player){
+
+function resetBagpack(player:Player){
 
 
   const Equippable = player.getComponent(EntityComponentTypes.Equippable);
