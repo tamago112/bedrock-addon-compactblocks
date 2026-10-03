@@ -1,0 +1,33 @@
+{
+  "format_version": "1.17.0",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "compactblocks:blockbag_recipes"
+    },
+
+    "tags": ["crafting_table"],
+    "group": "compactblocks",
+    "pattern": [
+      "ppp",
+      "pcp",
+      "ppp"
+    ],
+    "key": {
+      "c": {
+        "item": "minecraft:chest"
+    
+      },
+      "s": {
+        "item": "minecraft:string"
+     
+      },
+      "p": {
+        "item": "minecraft:paper"
+      }
+    },
+    "result": {
+      "item": "compactblocks:blockbag",
+      "count": 1
+    }
+  }
+}

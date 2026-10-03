@@ -1,0 +1,38 @@
+## manifest.json
+
+pack.name=compactblocks(R)
+pack.description=An add-on that adds an item capable of holding an unlimited number of blocks in a single slot.
+
+
+
+##Item
+item.compactblocks.blockbag.name=cardboard box
+
+
+
+
+##lore
+
+compactblocks.item.lore.inter=item
+
+
+## message
+
+### save
+compactblocks.message.save.success=§yThe item has been saved. - Type ID: %1, count: %2
+compactblocks.message.save.error=§cThat item is not a block. - Type ID: %1, count: %2
+
+### select
+compactblocks.message.select.start=§eYou are now in selection mode. Use an item to make a selection, or cancel by attacking while looking downwards.
+compactblocks.message.select.error=§cPlease do not hold an item in your left hand.
+compactblocks.message.select.cancel=§eSelection mode has been canceled.
+
+### input
+compactblocks.message.input.success=§eAll items in your inventory have been put into the cardboard box.
+
+### return
+compactblocks.message.return.success= has been returned.
+compactblocks.message.return.error=§c§lThe item is empty and cannot be returned.
+
+### blockError
+compactblocks.error.noblock=§cRegistered item is not a block: %1

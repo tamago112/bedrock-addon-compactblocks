@@ -1,0 +1,40 @@
+
+## manifest.json
+
+pack.name=compactblocks(R)
+pack.description=一つのスロットにブロックを無限に保持できるアイテムを追加するアドオン
+
+
+
+
+##Item
+item.compactblocks.blockbag.name=段ボール箱
+
+
+
+
+##lore
+
+compactblocks.item.lore.inter=アイテム
+
+
+## message
+
+### save
+compactblocks.message.save.success=§yアイテムを保存しました。- 種類:%1,個数:%2
+compactblocks.message.save.error=§cそのアイテムはブロックではありません。- 種類:%1,個数:%2
+
+### select
+compactblocks.message.select.start=§e選択モードになりました。アイテムを使用して選択するか、下を向きながら攻撃でキャンセルします。
+compactblocks.message.select.error=§c左手にアイテムを持たないでください。
+compactblocks.message.select.cancel=§e選択モードをキャンセルしました。
+
+### input
+compactblocks.message.input.success=§eインベントリ内ののアイテムを全て段ボールに入れました
+
+### return
+compactblocks.message.return.success=を返却しました。
+compactblocks.message.return.error=§c§lアイテムがからの為、返却できません
+
+### blockError
+compactblocks.error.noblock=§c登録されたアイテムはブロックではありません: %1

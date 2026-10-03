@@ -1,0 +1,16 @@
+{
+  "name": "compactblocks_addon",
+  "version": "1.0.0",
+  "description": "minecraft addon",
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "./Behavior_packs/scripts/main.js",
+  "scripts": {
+   
+  },
+  "devDependencies": {
+    "@minecraft/server": "2.9.0",
+    "@minecraft/server-ui": "2.1.0"
+  }
+}
