@@ -30,7 +30,7 @@ compactblocks.message.select.error=§c左手にアイテムを持たないでく
 compactblocks.message.select.cancel=§e選択モードをキャンセルしました。
 
 ### input
-compactblocks.message.input.success=§eインベントリ内ののアイテムを全てふろしきに入れました
+compactblocks.message.input.success=§eインベントリ内ののアイテムを全て段ボールに入れました
 
 ### return
 compactblocks.message.return.success=を返却しました。
