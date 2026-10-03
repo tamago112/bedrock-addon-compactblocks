@@ -28,7 +28,7 @@ compactblocks.message.select.error=§cPlease do not hold an item in your left ha
 compactblocks.message.select.cancel=§eSelection mode has been canceled.
 
 ### input
-compactblocks.message.input.success=§eAll items in your inventory have been put into the furoshiki.
+compactblocks.message.input.success=§eAll items in your inventory have been put into the cardboard box.
 
 ### return
 compactblocks.message.return.success= has been returned.
