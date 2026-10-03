@@ -1,0 +1,12 @@
+{
+	"resource_pack_name": "Template ResourcePack",
+	"texture_name": "atlas.items",
+	"texture_data": {
+		
+		"blockbag": {
+			"textures": "textures/compactblocks/items/cardboard"
+		}
+		  
+
+}
+}

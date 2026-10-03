@@ -1,0 +1,5 @@
+## manifest.json
+
+pack.name=compactblocks(B)
+pack.description=一つのスロットにブロックを無限に保持できるアイテムを追加するアドオン
+
