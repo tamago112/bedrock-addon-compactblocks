@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "minecraft addon",
   "license": "MIT",
-  "author": "",
+  "author": "tamago112",
   "type": "module",
   "main": "./Behavior_packs/scripts/main.js",
   "scripts": {
