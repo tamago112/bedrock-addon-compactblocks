@@ -54,7 +54,8 @@
 
  
 
-![ブロックバックのツールチップ](assets/block_bag_toolTip.png)
+![ブロックバックのツールチップ](assets/screenshots/block_bag_toolTip.png)
+
 
 #### レシピ
 
@@ -62,7 +63,7 @@
 - 中央にチェスト(チェスト × 1)
 - 紙で囲む(紙 × 8)
 
-![ブロックパックのレシピ](assets/compactblocks_Recipe.png)
+![ブロックパックのレシピ](assets/screenshots/compactblocks_Recipe.png)
 
 
 ## 対応言語
@@ -71,3 +72,13 @@
 - 英語(機械翻訳)
 
 ※ 英語は機械翻訳を利用している為、翻訳ミスが含まれている可能性があります。
+
+## ライセンス
+
+
+- **ソースコード**（画像以外のtypescript, jsonファイル等）: [MIT License](LICENSE)
+- **自作画像** (Resource_packs/textures/compactblocks/items/**): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja)
+    - © 2026 tamago112 
+- **Minecraftのスクリーンショット**（assets/screenshots/**）: Minecraft / Mojang Studiosのコンテンツを含みます。MIT LicenseおよびCC BY 4.0の対象外です。
+
+Minecraftの利用については、[利用ガイドライン](https://www.minecraft.net/ja-jp/usage-guidelines) に従ってください。本リポジトリはMojang Studios / Microsoftによる公式・公認のものではありません。
