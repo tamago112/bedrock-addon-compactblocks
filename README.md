@@ -79,6 +79,6 @@
 - **ソースコード**（画像以外のtypescript, jsonファイル等）: [MIT License](LICENSE)
 - **自作画像** (Resource_packs/textures/compactblocks/**): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja)
     - © 2026 tamago112 
-- **Minecraftのスクリーンショット**（assets/screenshots/**）: Minecraft / Mojang Studiosのコンテンツを含みます。MIT LicenseおよびCC BY 4.0の対象外です。
+- **Minecraftのスクリーンショット**（assets/screenshots/**）:  Mojang ABおよびMicrosoftが権利を有するコンテンツが含まれています。これらは CC BY 4.0 および MIT Licenseの対象外です。
 
-Minecraftの利用については、[利用ガイドライン](https://www.minecraft.net/ja-jp/usage-guidelines) に従ってください。本リポジトリはMojang Studios / Microsoftによる公式・公認のものではありません。
+Minecraftの利用については、[利用ガイドライン](https://www.minecraft.net/ja-jp/usage-guidelines) に従ってください。本リポジトリはMojang AB または Microsoftによる公式・公認のものではありません。
