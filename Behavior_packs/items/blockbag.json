@@ -9,7 +9,13 @@
 		},
 		"components": {
 			"minecraft:max_stack_size": 1,
-			"minecraft:icon":"blockbag",
+
+			"minecraft:icon": {
+				 "textures": {
+                    "default": "blockbag",
+                     "dyed": "blockbag_dyed" 
+                }
+			},
 
 			  "minecraft:display_name":{
       			"value": "item.compactblocks.blockbag.name"
@@ -29,7 +35,10 @@
 			"minecraft:cooldown": {
 				"category": "compactblocks_empty_cooldown", 
 				"duration": 1.0
-			}
+			},
+
+			
+			"minecraft:dyeable": {}
 		
 
 		

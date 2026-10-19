@@ -2,7 +2,7 @@ import { Player, Direction, Block, Vector3, ItemStack, EntityComponentTypes, Equ
 import {block_interaction_range, blockbagId, StorageId } from "../pram";
 import { addBlockCount, checkSomeVector,getBagInter, getBlockCount, setBagInter } from "./bagInter";
 import { checkVector3 } from "../helper";
-import { replaceableID, solidId, solidTag } from "./blocks";
+import { REPLACEABLE_BLOCKS, SOLID_BLOCK_IDS, SOLID_BLOCK_TAGS } from "./blocks";
 
 
 
@@ -84,7 +84,7 @@ export function placeInteractBlock(player:Player,item:ItemStack,targetBlock:Bloc
            
               const directionBlockLocation = directionBlock.location;
 
-              const solidBlock    = isSolidBlock(interItem,solidId)
+              const solidBlock    = isSolidBlock(interItem,SOLID_BLOCK_IDS)
               const entityHindering = isEntityCollidingWithTarget(player,directionBlockLocation)
 
               const someVector      = !!adjacentVec&&checkSomeVector(adjacentVec,targetBlock.location)
@@ -94,7 +94,7 @@ export function placeInteractBlock(player:Player,item:ItemStack,targetBlock:Bloc
         
 
          
-              if (!directionBlock || !interItem  ||!directionBlock.isLiquid&&!isSolidBlock(directionBlock.typeId,replaceableID)&&!directionBlock.isAir || !solidBlock&&entityHindering) return;
+              if (!directionBlock || !interItem  ||!directionBlock.isLiquid&&!isSolidBlock(directionBlock.typeId,REPLACEABLE_BLOCKS)&&!directionBlock.isAir || !solidBlock&&entityHindering) return;
     
           
  
@@ -452,7 +452,7 @@ function isSolidBlock(typeId:string,list:string[]){
 
     try{
         const block = BlockPermutation.resolve(typeId)
-        const findTag = solidTag.filter(tag=>block.hasTag(tag))
+        const findTag = SOLID_BLOCK_TAGS.filter(tag=>block.hasTag(tag))
 
       
         return findTag.length > 0 || list.includes(typeId)

@@ -19,8 +19,8 @@ compactblocks.item.lore.inter=item
 ## message
 
 ### save
-compactblocks.message.save.success=§yThe item has been saved. - Type ID: %1, count: %2
-compactblocks.message.save.error=§cThat item is not a block. - Type ID: %1, count: %2
+compactblocks.message.save.success=§y saved
+compactblocks.message.save.error=§c is not a block
 
 ### select
 compactblocks.message.select.start=§eYou are now in selection mode. Use an item to make a selection, or cancel by attacking while looking downwards.
@@ -28,11 +28,10 @@ compactblocks.message.select.error=§cPlease do not hold an item in your left ha
 compactblocks.message.select.cancel=§eSelection mode has been canceled.
 
 ### input
-compactblocks.message.input.success=§eAll items in your inventory have been put into the cardboard box.
-
+compactblocks.message.input.success=§e All registered items in the inventory have been put into cardboard boxes.
 ### return
 compactblocks.message.return.success= has been returned.
-compactblocks.message.return.error=§c§lThe item is empty and cannot be returned.
+compactblocks.message.return.error=§c§lCannot return because it is empty.
 
 ### blockError
 compactblocks.error.noblock=§cRegistered item is not a block: %1
