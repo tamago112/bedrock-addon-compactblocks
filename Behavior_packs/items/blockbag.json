@@ -28,9 +28,7 @@
 				"slot": "carrot_stick",
 				"value": 10
 			},
-			"minecraft:durability": {
-				  "max_durability": 100
-			},
+			
 
 			"minecraft:cooldown": {
 				"category": "compactblocks_empty_cooldown", 
