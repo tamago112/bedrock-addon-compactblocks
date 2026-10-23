@@ -2,7 +2,7 @@
 ## manifest.json
 
 pack.name=compactblocks(R)
-pack.description=一つのスロットにブロックを無限に保持できるアイテムを追加するアドオン
+pack.description=1スロットでブロックを無制限に収納できるアイテムを追加するアドオン
 
 
 
@@ -29,11 +29,11 @@ compactblocks.message.select.error=§c左手にアイテムを持たないでく
 compactblocks.message.select.cancel=§e選択モードをキャンセルしました
 
 ### input
-compactblocks.message.input.success=§eインベントリ内の全ての登録アイテムを段ボールに入れました
+compactblocks.message.input.success=§eインベントリ内の全ての登録アイテムを段ボール箱に入れました
 
 ### return
 compactblocks.message.return.success=を返却しました
-compactblocks.message.return.error=§c§l中身が空のため返却できません
+compactblocks.message.return.error=§c§l空の段ボール箱からアイテムを取り出すことはできません
 
 ### blockError
 compactblocks.error.noblock=§c登録されたアイテムはブロックではありません: %1

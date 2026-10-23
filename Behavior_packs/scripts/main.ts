@@ -388,7 +388,7 @@ world.afterEvents.playerSwingStart.subscribe((event) => {
               const nextbagItem = clearBagInter(item,player)
 
               content.setItem(player.selectedSlotIndex, nextbagItem);
-              player.onScreenDisplay.setActionBar({translate:"compactblocks.message.return.error"});
+              //player.onScreenDisplay.setActionBar({translate:"compactblocks.message.return.error"});
 
             }
 
