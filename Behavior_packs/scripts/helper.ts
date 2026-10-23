@@ -17,6 +17,23 @@ export function checkVector3(vector:any){
 
 }
 
+export function checkRGB(rgb:any){
+
+    if(typeof rgb === "object"&&!Array.isArray(rgb)){
+
+        const record = rgb as Record<any,any>
+
+        if(typeof record["red"] === "number" && typeof record["blue"] === "number"&& typeof record["green"] === "number"){
+            return true
+        }
+
+    }
+
+    return false
+
+
+}
+
 export function getPlayerSpeed(player:Player){
    
         const velocity = player.getVelocity();
@@ -32,4 +49,24 @@ export function getPlayerSpeed(player:Player){
 
 
         return speed
+}
+
+export function safeJsonParse(str:any){
+
+    try{
+        return JSON.parse(str) as Record<any,any>
+    }catch(e){
+        return undefined
+    }
+
+}
+
+export function safeJsonStr(obj:any){
+
+    try{
+        return JSON.stringify(obj)
+    }catch(e){
+        return undefined
+    }
+
 }

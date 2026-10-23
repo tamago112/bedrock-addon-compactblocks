@@ -1,7 +1,7 @@
-import { BlockPermutation, Container, EnchantmentTypes, EntityComponentTypes, ItemStack, Player, Vector3} from "@minecraft/server";
+import { BlockPermutation, Container, EnchantmentTypes, EntityComponentTypes, ItemComponentTypes, ItemStack, Player, RGB, Vector3} from "@minecraft/server";
 import { blockbagData } from "../type";
 import { blockbagId, StorageId } from "../pram";
-import { getPlayerSpeed } from "../helper";
+import { checkRGB, getPlayerSpeed, safeJsonParse } from "../helper";
 
 export function setBagInter(itemStack: ItemStack, typeId: string, count: number,player:Player) {
 
@@ -157,11 +157,15 @@ export function checkBlock(typeId:string){
 
 export function playerGiveItem(player: Player, typeId: string, count: number) {
 
+
+
   const getItemData = new ItemStack(typeId)
   const maxAmount = getItemData.maxAmount
   const contenter = player.getComponent(EntityComponentTypes.Inventory)?.container
 
   let clientCount = count;
+
+
 
   if (contenter) {
     while (clientCount > 1) {
@@ -186,7 +190,7 @@ export function playerGiveItem(player: Player, typeId: string, count: number) {
        
         if(clientCount > 0){
            const newItem = new ItemStack(typeId,clientCount)
-           contenter.addItem(newItem)
+          
 
 
           if(contenter.emptySlotsCount > 0){
@@ -202,9 +206,15 @@ export function playerGiveItem(player: Player, typeId: string, count: number) {
         }
 
          clientCount -= maxAmount
+
+         return;
+
         
 
       }
+
+      
+        
 
      
 
@@ -280,5 +290,38 @@ export function getBlockInterval(player:Player,placeCount:number){
   }
 
   return 0
+
+}
+
+
+export function getItemcColor(item:ItemStack){
+
+
+  const dynamicRGB = item.getDynamicProperty(StorageId.BAG_COLOR)
+  const parseRGB   = safeJsonParse(dynamicRGB)
+  const savedRGB   =  checkRGB(parseRGB) ? parseRGB as RGB : undefined
+
+  
+
+  const dyeable =  item.getComponent(ItemComponentTypes.Dyeable)
+
+  if(dyeable){
+       return savedRGB ?? dyeable.color
+  }else{
+      return undefined
+  }
+
+}
+
+export function createBagItem(color?:RGB){
+
+  const backItem = new ItemStack(blockbagId);
+  const dyeable = backItem.getComponent(ItemComponentTypes.Dyeable)
+
+  if(dyeable){
+       dyeable.color = color
+  }
+
+  return backItem
 
 }

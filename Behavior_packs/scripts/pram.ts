@@ -3,6 +3,7 @@ export const StorageId = {
 
     BAG_INTER:"interItem",
     BAG_COUNT: "bag_count",
+    BAG_COLOR:"bag_color",
 
     PLAYER_USE_LAST_TICK:"player_use_tick",
 

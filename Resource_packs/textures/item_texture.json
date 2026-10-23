@@ -5,6 +5,9 @@
 		
 		"blockbag": {
 			"textures": "textures/compactblocks/items/cardboard"
+		},
+		"blockbag_dyed": {
+			"textures": "textures/compactblocks/items/cardboard_dyed"
 		}
 		  
 

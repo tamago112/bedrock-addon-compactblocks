@@ -1,8 +1,9 @@
-import { Container, Direction, EntityComponentTypes, EntitySwingSource, EquipmentSlot, ItemComponentTypes, ItemLockMode, ItemStack, Player, system, world } from "@minecraft/server";
-import { checkBlock, clearBagInter, findbag, getBagInter, getBlockCount, getBlockInterval, playerGiveItem, playerPosDropItem, setBagInter } from "./block/bagInter";
+import { Container, Direction, EntityComponentTypes, EntitySwingSource, EquipmentSlot, GameMode, ItemComponentTypes, ItemLockMode, ItemStack, Player, system, world } from "@minecraft/server";
+import { checkBlock, clearBagInter, createBagItem, findbag, getBagInter, getBlockCount, getBlockInterval, getItemcColor as getItemColor, playerGiveItem, playerPosDropItem, setBagInter } from "./block/bagInter";
 import { BlocksInTheDirection, getInvertDirection, getPlacementDirection, placeInteractBlock } from "./block/blockPlace";
 import {block_interaction_range, blockbagId, blockResetInterval, StorageId } from "./pram";
-import { replaceableID } from "./block/blocks";
+import { INTERACTABLE_BLOCKS, REPLACEABLE_BLOCKS } from "./block/blocks";
+import { safeJsonStr } from "./helper";
 
 
 
@@ -15,22 +16,26 @@ world.beforeEvents.playerInteractWithBlock.subscribe((event)=>{
 
   
   
-  if(item?.typeId === blockbagId){
+  if(item?.typeId === blockbagId&&player.getGameMode() !== GameMode.Adventure){
 
   
 
-  event.cancel = true
 
   const block = event.block
   const blockFace = event.blockFace
 
+  if(!player.isSneaking&&INTERACTABLE_BLOCKS.includes(block.typeId))return;
 
 
-  const isReplaceable = replaceableID.includes(block.typeId)
+
+  const isReplaceable = REPLACEABLE_BLOCKS.includes(block.typeId)
 
   const nextBlock =  isReplaceable ? block : BlocksInTheDirection(block,blockFace)
   
 
+  
+  event.cancel = true
+  
 
   system.run(()=>{
     if(nextBlock){
@@ -112,17 +117,21 @@ world.afterEvents.itemUse.subscribe(function (event) {
   const player = event.source;
 
   const Equippable = player.getComponent(EntityComponentTypes.Equippable);
+  const ofHandItem = Equippable?.getEquipment(EquipmentSlot.Offhand)
+
 
 
  
-  if (player.getDynamicProperty(StorageId.PLAYER_SELECTING) && Equippable?.getEquipment(EquipmentSlot.Offhand)?.typeId === blockbagId) {
+  if (player.getDynamicProperty(StorageId.PLAYER_SELECTING) && Equippable  &&ofHandItem?.typeId === blockbagId) {
 
 
 
          if(checkBlock(item.typeId)){
           
           
-          const backItem = new ItemStack(blockbagId);
+      
+          const getColor = getItemColor(ofHandItem)
+          const backItem = createBagItem(getColor)
 
           const setBackItem = setBagInter(backItem, item.typeId, item.amount,player)
 
@@ -132,12 +141,14 @@ world.afterEvents.itemUse.subscribe(function (event) {
 
           player.setDynamicProperty(StorageId.PLAYER_SELECTING, false);
 
-          player.sendMessage({translate:"compactblocks.message.save.success",with:[`${item.typeId}`,`${item.amount}`]});
+          player.onScreenDisplay.setActionBar({rawtext:[{text:"§b"},{ translate: item.localizationKey },{translate:"compactblocks.message.save.success"}]});
 
 
           player.dimension.playSound("item.spyglass.use", player.location);
     }else{
-        player.sendMessage({translate:"compactblocks.message.save.error",with:[`${item.typeId}`,`${item.amount}`]});
+      
+        player.onScreenDisplay.setActionBar({rawtext:[{text:"§c"},{ translate: item.localizationKey },{translate:"compactblocks.message.save.error"}]});
+
         player.dimension.playSound("note.bass", player.location);
 
     }
@@ -168,13 +179,18 @@ world.afterEvents.itemUse.subscribe(function (event) {
           
           if (Equippable?.getEquipment(EquipmentSlot.Offhand)) {
 
-      player.sendMessage({translate:"compactblocks.message.select.error"});
+      player.onScreenDisplay.setActionBar({translate:"compactblocks.message.select.error"});
       
     } else {
 
 
 
-            const backItem = new ItemStack(blockbagId);
+            const getColor = getItemColor(item)
+            const backItem = createBagItem()
+
+            if(getColor){
+               backItem.setDynamicProperty(StorageId.BAG_COLOR,safeJsonStr(getColor))
+            }
             backItem.lockMode = ItemLockMode.slot;
 
 
@@ -186,7 +202,8 @@ world.afterEvents.itemUse.subscribe(function (event) {
             })
 
 
-            player.sendMessage({translate:"compactblocks.message.select.start"});
+            
+            player.onScreenDisplay.setActionBar({translate:"compactblocks.message.select.start"});
             player.dimension.playSound("random.orb", player.location);
             player.setDynamicProperty(StorageId.PLAYER_SELECTING, true);
 
@@ -230,7 +247,7 @@ world.afterEvents.itemUse.subscribe(function (event) {
                 if (!viewBlock) {
 
                   
-                  player.sendMessage({translate:"compactblocks.message.input.success"});
+                  
                   const contenter = player.getComponent(EntityComponentTypes.Inventory)?.container
 
 
@@ -273,6 +290,10 @@ world.afterEvents.itemUse.subscribe(function (event) {
                     const nextItem = setBagInter(item, bagInter.type, nextCount,player)
 
                     contenter.setItem(player.selectedSlotIndex, nextItem)
+
+                    if(blockCount > 0){
+                       player.onScreenDisplay.setActionBar({translate:"compactblocks.message.input.success"});
+                    }
 
                   }
 
@@ -321,7 +342,7 @@ world.afterEvents.playerSwingStart.subscribe((event) => {
          
 
           const Equippable = player.getComponent(EntityComponentTypes.Equippable);
-          const ofHandItemId = Equippable?.getEquipment(EquipmentSlot.Offhand)?.typeId
+          const ofHandItem = Equippable?.getEquipment(EquipmentSlot.Offhand)
 
 
           
@@ -358,7 +379,7 @@ world.afterEvents.playerSwingStart.subscribe((event) => {
               content.setItem(player.selectedSlotIndex, nextbagItem);
 
               player.playSound("random.pop")
-              player.sendMessage({ rawtext: [{ text: "§e" }, { translate: returnItem.localizationKey }, { translate:"compactblocks.message.return.success"}] })
+              player.onScreenDisplay.setActionBar({ rawtext: [{ text: "§e" }, { translate: returnItem.localizationKey }, { translate:"compactblocks.message.return.success"}] })
 
 
 
@@ -367,19 +388,20 @@ world.afterEvents.playerSwingStart.subscribe((event) => {
               const nextbagItem = clearBagInter(item,player)
 
               content.setItem(player.selectedSlotIndex, nextbagItem);
-              player.sendMessage({translate:"compactblocks.message.return.error"});
+              //player.onScreenDisplay.setActionBar({translate:"compactblocks.message.return.error"});
 
             }
 
           }
 
-          else if (player.getDynamicProperty(StorageId.PLAYER_SELECTING) && ofHandItemId &&blockbagId === ofHandItemId && player.isSneaking && player.getRotation().x > 80) {
+          else if (player.getDynamicProperty(StorageId.PLAYER_SELECTING) && ofHandItem &&blockbagId === ofHandItem.typeId && player.isSneaking && player.getRotation().x > 80) {
             if (player.getDynamicProperty(StorageId.PLAYER_SELECTING)) {
 
 
 
 
-              const backItem = new ItemStack(blockbagId);
+              const getColor = getItemColor(ofHandItem)
+              const backItem = createBagItem(getColor)
       
 
               
@@ -393,7 +415,7 @@ world.afterEvents.playerSwingStart.subscribe((event) => {
 
 
               player.setDynamicProperty(StorageId.PLAYER_SELECTING, false);
-              player.sendMessage({translate:"compactblocks.message.select.cancel"});
+              player.onScreenDisplay.setActionBar({translate:"compactblocks.message.select.cancel"});
               player.dimension.playSound("random.orb", player.location, { pitch: 0.5 });
 
             }
@@ -638,18 +660,19 @@ function resetBagpack(player:Player){
   const Equippable = player.getComponent(EntityComponentTypes.Equippable);
   const ofHand = Equippable?.getEquipment(EquipmentSlot.Offhand)
 
-     if (ofHand?.typeId === blockbagId) {
+     if (ofHand&&ofHand.typeId === blockbagId) {
 
 
 
 
-              const backItem = new ItemStack(blockbagId);
+              const getColor = getItemColor(ofHand)
+              const backItem = createBagItem(getColor)
               player.getComponent(EntityComponentTypes.Inventory)?.container.addItem(backItem)
               Equippable?.setEquipment(EquipmentSlot.Offhand, undefined);
 
 
          
-              player.sendMessage({translate:"compactblocks.message.select.cancel"});
+              player.onScreenDisplay.setActionBar({translate:"compactblocks.message.select.cancel"});
               player.dimension.playSound("random.orb", player.location, { pitch: 0.5 });
 
   }
