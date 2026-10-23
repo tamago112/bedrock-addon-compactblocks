@@ -133,7 +133,7 @@ export function placeInteractBlock(player:Player,item:ItemStack,targetBlock:Bloc
                     const permutation = getDirectionBlock(interItem,blockDirection,player)
                     player.dimension.setBlockPermutation(directionBlockLocation,permutation);
                   }catch{
-                      player.sendMessage({translate:"compactblocks.error.noblock"});
+                      player.onScreenDisplay.setActionBar({translate:"compactblocks.error.noblock"});
                   }
 
               
