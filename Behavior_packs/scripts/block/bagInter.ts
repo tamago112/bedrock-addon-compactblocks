@@ -157,11 +157,15 @@ export function checkBlock(typeId:string){
 
 export function playerGiveItem(player: Player, typeId: string, count: number) {
 
+
+
   const getItemData = new ItemStack(typeId)
   const maxAmount = getItemData.maxAmount
   const contenter = player.getComponent(EntityComponentTypes.Inventory)?.container
 
   let clientCount = count;
+
+
 
   if (contenter) {
     while (clientCount > 1) {
@@ -186,7 +190,7 @@ export function playerGiveItem(player: Player, typeId: string, count: number) {
        
         if(clientCount > 0){
            const newItem = new ItemStack(typeId,clientCount)
-           contenter.addItem(newItem)
+          
 
 
           if(contenter.emptySlotsCount > 0){
@@ -202,9 +206,15 @@ export function playerGiveItem(player: Player, typeId: string, count: number) {
         }
 
          clientCount -= maxAmount
+
+         return;
+
         
 
       }
+
+      
+        
 
      
 
